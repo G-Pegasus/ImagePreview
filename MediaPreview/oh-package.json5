@@ -1,0 +1,23 @@
+{
+  "name": "@lyb/media-preview",
+  "version": "1.0.0",
+  "description": "简单易用的媒资预览框架,可自定义支持各种预览，仿微信一镜到底效果",
+  "main": "Index.ets",
+  "author": "lyb5834",
+  "license": "MIT",
+  "keywords": [
+    "preview",
+    "image",
+    "video",
+    "audio",
+    "预览",
+    "图片",
+    "视频",
+    "放大",
+    "一镜到底",
+    "微信"
+  ],
+  "homepage": "https://gitee.com/lyb5834/media-preview.git",
+  "repository": "https://gitee.com/lyb5834/media-preview.git",
+  "dependencies": {}
+}

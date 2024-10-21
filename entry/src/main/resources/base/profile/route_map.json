@@ -1,0 +1,14 @@
+{
+  "routerMap": [
+    {
+      "name": "SimpleDemoPage",
+      "pageSourceFile": "src/main/ets/pages/demo/SimpleDemoPage.ets",
+      "buildFunction": "SimpleDemoPageBuilder"
+    },
+    {
+      "name": "CustomDemoPage",
+      "pageSourceFile": "src/main/ets/pages/demo/CustomDemoPage.ets",
+      "buildFunction": "CustomDemoPageBuilder"
+    }
+  ]
+}
