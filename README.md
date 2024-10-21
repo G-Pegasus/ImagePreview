@@ -56,4 +56,4 @@ List({ space: 10 }) {
 
 #### 开源协议
 
-[MIT License](MediaPreview/LICENSE)
+[MIT License](LICENSE)
