@@ -1,6 +1,6 @@
 {
   "name": "@lyb/media-preview",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "简单易用的媒资预览框架,可自定义支持各种预览，仿微信一镜到底效果",
   "main": "Index.ets",
   "author": "lyb5834",

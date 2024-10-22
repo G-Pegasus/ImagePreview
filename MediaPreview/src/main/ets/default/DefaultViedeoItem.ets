@@ -60,6 +60,17 @@ export struct VideoPlayer {
       .height("100%")
     }
     .onClick(() => this.playAction())
+    .onVisibleAreaChange([0.0, 1.0], (isVisible, currentRatio) => {
+      if (!isVisible) {
+        if (this.isPlaying) {
+          this.controller.pause()
+        }
+      }else {
+        if (!this.isPlaying) {
+          this.controller.start()
+        }
+      }
+    })
   }
 
   @Builder
