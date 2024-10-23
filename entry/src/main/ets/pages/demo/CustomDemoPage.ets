@@ -59,11 +59,11 @@ export struct CustomDemoPage {
           ListItem() {
             this.getImageItem(item, index)
           }
-          //设置id，不然不会显示一镜到底效果
+          //TODO: 设置id，不然不会显示一镜到底效果
           .id(this.options.idBuilder(item, index))
           .aspectRatio(1)
           .clickEffect({ level: ClickEffectLevel.MIDDLE, scale: 0.8 })
-          //仿微信那种资源在预览时原始资源隐藏显示
+          //TODO: 仿微信那种资源在预览时原始资源隐藏显示
           .visibility(index == this.index ? Visibility.Hidden : Visibility.Visible)
           .onClick(() => {
             this.options

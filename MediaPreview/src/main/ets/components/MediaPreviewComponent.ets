@@ -50,7 +50,11 @@ export struct MediaPreviewComponent {
 
       Swiper() {
         LazyForEach(this.options.dataSource, (item: MediaModel, index: number) => {
-          this.contentBuilder(item, index)
+          if (this.options.thumbBuilder(item, index)) {
+            this.thumbBuilder(item, index)
+          } else {
+            this.contentBuilder(item, index)
+          }
         }, (item: MediaModel, index: number) => JSON.stringify(item) + index)
       }
       .index(this.currentPage)
@@ -219,5 +223,13 @@ export struct MediaPreviewComponent {
       this.getInitUIInfo()
       this.alpha = 0
     })
+  }
+
+  @Builder
+  thumbBuilder(item: MediaModel, index: number) {
+    Image(this.options.thumbBuilder(item, index)?.thumbSrc ?? '')
+      .width('100%')
+      .height('100%')
+      .objectFit(this.options.thumbBuilder(item, index)?.objectFit ?? ImageFit.Cover)
   }
 }

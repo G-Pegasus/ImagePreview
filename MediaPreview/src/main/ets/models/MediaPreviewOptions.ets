@@ -43,6 +43,10 @@ export class MediaPreviewOptions {
    */
   idBuilder: (item: MediaModel, index: number) => string = (item, index) => JSON.stringify(item) + index
   /**
+   * 可设置thumb图，优化一镜到底效果
+   */
+  thumbBuilder: (item: MediaModel, index: number) => MediaThumbOptions | undefined = () => undefined
+  /**
    * 是否支持缩放，默认是true
    */
   onZoomEnable: (item: MediaModel, index: number) => boolean = () => true
@@ -158,6 +162,14 @@ export class MediaPreviewOptions {
   }
 
   /**
+   * 设置thumb
+   */
+  setThumbBuilder(thumbBuilder: (item: MediaModel, index: number) => MediaThumbOptions | undefined): MediaPreviewOptions {
+    this.thumbBuilder = thumbBuilder
+    return this
+  }
+
+  /**
    * 监听page切换
    */
   setPageChangedListener(onPageChangedListener: (item: MediaModel, index: number) => void): MediaPreviewOptions {
@@ -188,4 +200,9 @@ export class MediaPreviewOptions {
     this.showPageText = showPageText
     return this
   }
+}
+
+export interface MediaThumbOptions {
+  thumbSrc: PixelMap | ResourceStr | DrawableDescriptor
+  objectFit: ImageFit
 }

@@ -54,6 +54,18 @@ List({ space: 10 }) {
         }, (item: DefaultMediaModel, index: number) => JSON.stringify(item) + index)
 ```
 
+一镜到底效果优化，设置 `thumbBuilder` 
+```
+this.options
+     .setThumbBuilder((_item, index) => {
+        const model: DefaultMediaModel = this.resources[index]
+        return {
+          thumbSrc: model.thumbSrc ?? '',
+          objectFit: ImageFit.Cover
+        }
+      })
+```
+
 #### 开源协议
 
 [Apache-2.0](LICENSE)

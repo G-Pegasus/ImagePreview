@@ -49,6 +49,18 @@ export struct SimpleDemoPage {
       .setLongPressListener((_item, index) => {
         console.log(`长按了第${index + 1}个资源`)
       })
+      //TODO: 可以自定义id
+      .setIdBuilder((_item, index) => {
+        return `media_${index}`
+      })
+      //TODO: 设置thumb可以优化一镜到底效果，可以注释对比效果
+      .setThumbBuilder((_item, index) => {
+        const model: DefaultMediaModel = this.resources[index]
+        return {
+          thumbSrc: model.thumbSrc ?? '',
+          objectFit: ImageFit.Cover
+        }
+      })
   }
 
   build() {
@@ -58,11 +70,13 @@ export struct SimpleDemoPage {
           ListItem() {
             this.getImageItem(item, index)
           }
-          //设置id，不然不会显示一镜到底效果
+          //TODO: 设置id，不然不会显示一镜到底效果
           .id(this.options.idBuilder(item, index))
+          //TODO: 如果列表数据模型和mediaPreview的数据模型不一致，可以自己设置，不过要和上面的`setIdBuilder`中id一致
+          .id(`media_${index}`)
           .aspectRatio(1)
           .clickEffect({ level: ClickEffectLevel.MIDDLE, scale: 0.8 })
-          //仿微信那种资源在预览时原始资源隐藏显示
+          //TODO: 仿微信那种资源在预览时原始资源隐藏显示
           .visibility(index == this.index ? Visibility.Hidden : Visibility.Visible)
           .onClick(() => {
             this.options
