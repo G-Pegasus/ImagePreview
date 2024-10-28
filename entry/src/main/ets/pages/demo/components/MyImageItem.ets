@@ -10,6 +10,11 @@ export struct MyImageItem {
   build() {
     Column() {
       Stack({alignContent: Alignment.Center}) {
+        Image(this.resource?.thumbSrc)
+          .objectFit(ImageFit.Cover)
+          .width("100%")
+          .visibility(this.loadingStatus == 1 ? Visibility.None : Visibility.Visible)
+
         Image(this.resource?.sourceSrc)
           .objectFit(ImageFit.Cover)
           .visibility(this.loadingStatus == 1 ? Visibility.Visible : Visibility.Hidden)

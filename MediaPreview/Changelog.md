@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.0.3] 2024年10月28日
+* `thumbBuilder` 参数变更，现在传入 @Builder 组件
+
 ## [1.0.2] 2024年10月23日
 * 增加可配置的 `thumbBuilder` 优化一镜到底效果
 

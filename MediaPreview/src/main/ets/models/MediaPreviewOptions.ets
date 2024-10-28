@@ -43,9 +43,10 @@ export class MediaPreviewOptions {
    */
   idBuilder: (item: MediaModel, index: number) => string = (item, index) => JSON.stringify(item) + index
   /**
-   * 可设置thumb图，优化一镜到底效果
+   * 可设置thumb, 必须传@Builder，优化一镜到底效果
    */
-  thumbBuilder: (item: MediaModel, index: number) => MediaThumbOptions | undefined = () => undefined
+  thumbBuilder: (item: MediaModel, index: number) => void = () => {
+  }
   /**
    * 是否支持缩放，默认是true
    */
@@ -164,7 +165,7 @@ export class MediaPreviewOptions {
   /**
    * 设置thumb
    */
-  setThumbBuilder(thumbBuilder: (item: MediaModel, index: number) => MediaThumbOptions | undefined): MediaPreviewOptions {
+  setThumbBuilder(thumbBuilder: (item: MediaModel, index: number) => void): MediaPreviewOptions {
     this.thumbBuilder = thumbBuilder
     return this
   }
@@ -200,9 +201,4 @@ export class MediaPreviewOptions {
     this.showPageText = showPageText
     return this
   }
-}
-
-export interface MediaThumbOptions {
-  thumbSrc: PixelMap | ResourceStr | DrawableDescriptor
-  objectFit: ImageFit
 }

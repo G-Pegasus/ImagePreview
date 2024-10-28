@@ -51,12 +51,8 @@ export struct CustomDemoPage {
         console.log(`长按了第${index + 1}个资源`)
       })
         //TODO: 设置thumb可以优化一镜到底效果，可以注释对比效果
-      .setThumbBuilder((_item, index) => {
-        const model: MyMediaModel = this.resources[index]
-        return {
-          thumbSrc: model.thumbSrc ?? '',
-          objectFit: ImageFit.Cover
-        }
+      .setThumbBuilder((item, index) => {
+        this.getImageItem(item as MyMediaModel, index)
       })
   }
 

@@ -7,11 +7,16 @@ import type componentUtils from '@ohos.arkui.componentUtils';
 import { display } from '@kit.ArkUI';
 import { PromptActionBaseBean, PromptActionTool } from '../utils/PromptActionTool';
 
+@Builder
+function empty() {
+}
+
 @Component
 export struct MediaPreviewComponent {
   @Link @Watch('valueChanged') promptAction: PromptActionBaseBean
   @Require options: MediaPreviewOptions = new MediaPreviewOptions()
   @Require @BuilderParam contentBuilder: (item: MediaModel, index: number) => void
+  @BuilderParam thumbBuilder: (item: MediaModel, index: number) => void = empty
   @State private currentPage: number = 0
   @State private alpha: number = 0
   @State private currentOffsetX: number = 0
@@ -50,7 +55,7 @@ export struct MediaPreviewComponent {
 
       Swiper() {
         LazyForEach(this.options.dataSource, (item: MediaModel, index: number) => {
-          if (this.options.thumbBuilder(item, index)) {
+          if (this.thumbBuilder != empty) {
             this.thumbBuilder(item, index)
           } else {
             this.contentBuilder(item, index)
@@ -58,7 +63,6 @@ export struct MediaPreviewComponent {
         }, (item: MediaModel, index: number) => JSON.stringify(item) + index)
       }
       .index(this.currentPage)
-      .id('thumb')
       .margin({
         left: this.thumbX,
         top: this.thumbY,
@@ -77,7 +81,7 @@ export struct MediaPreviewComponent {
               contentBuilder: () => this.contentBuilder(item, index),
               zoomEnable: this.options.onZoomEnable(item, index)
             })
-              .id(`preview+${index}`)
+              .id(`preview+${this.options.idBuilder(item, index)}`)
               .offset({
                 x: this.currentOffsetX,
                 y: this.currentOffsetY,
@@ -104,7 +108,6 @@ export struct MediaPreviewComponent {
       .height("100%")
       .loop(false)
       .clip(true)
-      .id('swiper')
       .onChange((index) => {
         this.currentPage = index
         this.options.onPageChangedListener(this.options.dataSource.getData(index), index)
@@ -170,7 +173,7 @@ export struct MediaPreviewComponent {
   }
 
   getPreviewUIInfo(index: number) {
-    let result = this.componentUtils.getRectangleById(`preview+${index}`)
+    let result = this.componentUtils.getRectangleById(`preview+${this.options.idBuilder(this.options.dataSource.getData(index), index)}`)
     this.previewComponentInfo = result
   }
 
@@ -223,13 +226,5 @@ export struct MediaPreviewComponent {
       this.getInitUIInfo()
       this.alpha = 0
     })
-  }
-
-  @Builder
-  thumbBuilder(item: MediaModel, index: number) {
-    Image(this.options.thumbBuilder(item, index)?.thumbSrc ?? '')
-      .width('100%')
-      .height('100%')
-      .objectFit(this.options.thumbBuilder(item, index)?.objectFit ?? ImageFit.Cover)
   }
 }

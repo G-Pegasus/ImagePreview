@@ -20,6 +20,7 @@ export struct DefaultMediaPreview {
           this.videoBuilder(item, index)
         }
       },
+      thumbBuilder: this.action.options.thumbBuilder,
     })
       .width('100%')
       .height('100%')
