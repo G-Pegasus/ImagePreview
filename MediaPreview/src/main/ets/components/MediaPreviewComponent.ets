@@ -7,16 +7,12 @@ import type componentUtils from '@ohos.arkui.componentUtils';
 import { display } from '@kit.ArkUI';
 import { PromptActionBaseBean, PromptActionTool } from '../utils/PromptActionTool';
 
-@Builder
-function empty() {
-}
-
 @Component
 export struct MediaPreviewComponent {
   @Link @Watch('valueChanged') promptAction: PromptActionBaseBean
   @Require options: MediaPreviewOptions = new MediaPreviewOptions()
   @Require @BuilderParam contentBuilder: (item: MediaModel, index: number) => void
-  @BuilderParam thumbBuilder: (item: MediaModel, index: number) => void = empty
+  @BuilderParam thumbBuilder: (item: MediaModel, index: number) => void
   @State private currentPage: number = 0
   @State private alpha: number = 0
   @State private currentOffsetX: number = 0
@@ -55,7 +51,7 @@ export struct MediaPreviewComponent {
 
       Swiper() {
         LazyForEach(this.options.dataSource, (item: MediaModel, index: number) => {
-          if (this.thumbBuilder != empty) {
+          if (this.thumbBuilder != undefined) {
             this.thumbBuilder(item, index)
           } else {
             this.contentBuilder(item, index)

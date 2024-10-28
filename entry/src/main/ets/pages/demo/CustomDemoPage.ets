@@ -49,8 +49,7 @@ export struct CustomDemoPage {
       })
       .setLongPressListener((_item, index) => {
         console.log(`长按了第${index + 1}个资源`)
-      })
-        //TODO: 设置thumb可以优化一镜到底效果，可以注释对比效果
+      })//TODO: 设置thumb可以优化一镜到底效果，可以注释对比效果
       .setThumbBuilder((item, index) => {
         this.getImageItem(item as MyMediaModel, index)
       })

@@ -45,8 +45,7 @@ export class MediaPreviewOptions {
   /**
    * 可设置thumb, 必须传@Builder，优化一镜到底效果
    */
-  thumbBuilder: (item: MediaModel, index: number) => void = () => {
-  }
+  thumbBuilder?: (item: MediaModel, index: number) => void
   /**
    * 是否支持缩放，默认是true
    */
