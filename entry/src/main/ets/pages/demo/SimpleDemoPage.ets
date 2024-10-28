@@ -11,7 +11,23 @@ export function SimpleDemoPageBuilder(name: string, param: object) {
 export struct SimpleDemoPage {
   @Prop item: HomeModel
   @State resources: DefaultMediaModel[] = []
+  //TODO: 可在初始化的时候set回调，注：options 也不一定需要全局申明，可在点击的时候创建
   options: MediaPreviewOptions = new MediaPreviewOptions()
+    .setPageChangedListener((_item, index) => {
+      this.index = index
+    })
+    .setBackListener(() => {
+      this.index = -1
+    })
+    .setLongPressListener((_item, index) => {
+      console.log(`长按了第${index + 1}个资源`)
+    })//TODO: 可以自定义id
+    .setIdBuilder((_item, index) => {
+      return `media_${index}`
+    })//TODO: 设置thumb可以优化一镜到底效果，可以注释对比效果
+    .setThumbBuilder((item, index) => {
+      this.getImageItem(item as DefaultMediaModel, index)
+    })
   @State index: number = -1
 
   aboutToAppear(): void {
@@ -39,24 +55,6 @@ export struct SimpleDemoPage {
       )
     ]
 
-    this.options
-      .setPageChangedListener((_item, index) => {
-        this.index = index
-      })
-      .setBackListener(() => {
-        this.index = -1
-      })
-      .setLongPressListener((_item, index) => {
-        console.log(`长按了第${index + 1}个资源`)
-      })
-      //TODO: 可以自定义id
-      .setIdBuilder((_item, index) => {
-        return `media_${index}`
-      })
-      //TODO: 设置thumb可以优化一镜到底效果，可以注释对比效果
-      .setThumbBuilder((item, index) => {
-        this.getImageItem(item as DefaultMediaModel, index)
-      })
   }
 
   build() {
