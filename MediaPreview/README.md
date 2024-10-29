@@ -62,6 +62,19 @@ this.options
     })
 ```
 
+#### 自定义
+* 简单自定义
+
+```
+this.options
+    .setContentBuilder((item, index) => {
+      this.getContentBuilder(item as DefaultMediaModel, index)
+    })
+```
+* 完全自定义
+
+可从model开始自定义，详细见demo
+
 #### 开源协议
 
 [Apache-2.0](LICENSE)

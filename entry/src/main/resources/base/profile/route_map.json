@@ -6,6 +6,11 @@
       "buildFunction": "SimpleDemoPageBuilder"
     },
     {
+      "name": "SimpleCustomDemoPage",
+      "pageSourceFile": "src/main/ets/pages/demo/SimpleCustomDemoPage.ets",
+      "buildFunction": "SimpleDemoPageBuilder"
+    },
+    {
       "name": "CustomDemoPage",
       "pageSourceFile": "src/main/ets/pages/demo/CustomDemoPage.ets",
       "buildFunction": "CustomDemoPageBuilder"

@@ -1,14 +1,15 @@
-import { MediaModel, MediaPreview, MediaPreviewOptions } from 'MediaPreview'
-import { DefaultMediaModel, DefaultMediaType } from 'MediaPreview/src/main/ets/default/DefaultMediaModel'
-import { HomeModel } from '../Index'
+import { MediaPreview, MediaPreviewOptions } from "MediaPreview"
+import { DefaultMediaModel, DefaultMediaType } from "MediaPreview/src/main/ets/default/DefaultMediaModel"
+import { HomeModel } from "../Index"
 
 @Builder
 export function SimpleDemoPageBuilder(name: string, param: object) {
-  SimpleDemoPage({ item: param as HomeModel })
+  SimpleCustomDemoPage({ item: param as HomeModel })
 }
 
+//TODO: 简单自定义只是传入 `contentBuilder` 实现预览的自定义
 @Component
-export struct SimpleDemoPage {
+export struct SimpleCustomDemoPage {
   @Prop item: HomeModel
   @State resources: DefaultMediaModel[] = []
   //TODO: 可在初始化的时候set回调，注：options 也不一定需要全局申明，可在点击的时候创建
@@ -27,6 +28,9 @@ export struct SimpleDemoPage {
     })//TODO: 设置thumb可以优化一镜到底效果，可以注释对比效果
     .setThumbBuilder((item, index) => {
       this.getImageItem(item as DefaultMediaModel, index)
+    })//TODO: 设置 `contentBuilder` 可以自定义preview
+    .setContentBuilder((item, index) => {
+      this.getContentBuilder(item as DefaultMediaModel, index)
     })
   @State index: number = -1
 
@@ -104,5 +108,24 @@ export struct SimpleDemoPage {
         .fillColor(Color.White)
         .visibility(item.type == DefaultMediaType.VIDEO ? Visibility.Visible : Visibility.None)
     }
+  }
+
+  //TODO: 这里只是展示效果，就不详细绘制了
+  @Builder
+  getContentBuilder(item: DefaultMediaModel, _index: number) {
+    Column() {
+      Stack() {
+        Image(item.thumbSrc)
+          .objectFit(ImageFit.Cover)
+          .width("100%")
+
+        Image(item.sourceSrc)
+          .objectFit(ImageFit.Cover)
+          .autoResize(true)
+          .width("100%")
+      }
+    }
+    .justifyContent(FlexAlign.Center)
+    .width("100%")
   }
 }

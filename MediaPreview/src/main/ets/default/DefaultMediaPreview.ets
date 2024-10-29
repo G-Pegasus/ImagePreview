@@ -13,13 +13,14 @@ export struct DefaultMediaPreview {
     MediaPreviewComponent({
       promptAction: this.action,
       options: this.action.options,
-      contentBuilder: (item: MediaModel, index: number) => {
-        if ((item as DefaultMediaModel).type == DefaultMediaType.IMAGE) {
-          this.imageBuilder(item, index)
-        } else {
-          this.videoBuilder(item, index)
-        }
-      },
+      contentBuilder: this.action.options.contentBuilder ? this.action.options.contentBuilder :
+        (item: MediaModel, index: number) => {
+          if ((item as DefaultMediaModel).type == DefaultMediaType.IMAGE) {
+            this.imageBuilder(item, index)
+          } else {
+            this.videoBuilder(item, index)
+          }
+        },
       thumbBuilder: this.action.options.thumbBuilder,
     })
       .width('100%')

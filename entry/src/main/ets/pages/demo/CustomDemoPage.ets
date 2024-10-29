@@ -8,6 +8,7 @@ export function CustomDemoPageBuilder(name: string, param: object) {
   CustomDemoPage({ item: param as HomeModel })
 }
 
+//TODO: 完全自定义从model，到preview可以完全自定义
 @Component
 export struct CustomDemoPage {
   @Prop item: HomeModel

@@ -47,6 +47,10 @@ export class MediaPreviewOptions {
    */
   thumbBuilder?: (item: MediaModel, index: number) => void
   /**
+   * 预览页，自定义的时候可传
+   */
+  contentBuilder?: (item: MediaModel, index: number) => void
+  /**
    * 是否支持缩放，默认是true
    */
   onZoomEnable: (item: MediaModel, index: number) => boolean = () => true
@@ -162,10 +166,18 @@ export class MediaPreviewOptions {
   }
 
   /**
-   * 设置thumb
+   * 设置thumb,优化一镜到底效果
    */
   setThumbBuilder(thumbBuilder: (item: MediaModel, index: number) => void): MediaPreviewOptions {
     this.thumbBuilder = thumbBuilder
+    return this
+  }
+
+  /**
+   * 设置content，自定义预览组件
+   */
+  setContentBuilder(contentBuilder: (item: MediaModel, index: number) => void): MediaPreviewOptions {
+    this.contentBuilder = contentBuilder
     return this
   }
 
@@ -178,7 +190,7 @@ export class MediaPreviewOptions {
   }
 
   /**
-   * 长按事件监听
+   * 长按事件监听,自定义时失效
    */
   setLongPressListener(onLongPressListener: (item: MediaModel, index: number) => void): MediaPreviewOptions {
     this.onLongPressListener = onLongPressListener

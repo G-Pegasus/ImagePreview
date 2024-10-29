@@ -11,8 +11,12 @@ struct Index {
         desc: '简单用法demo'
       },
       {
+        name: 'SimpleCustomDemoPage',
+        desc: '简单自定义demo'
+      },
+      {
         name: 'CustomDemoPage',
-        desc: '自定义demo'
+        desc: '完全自定义demo'
       }
     ]
   }

@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.4] 2024年10月29日
+* 增加 `contentBuilder`，可自定义preview
+* 完善自定义demo
+
 ## [1.0.3] 2024年10月28日
 * `thumbBuilder` 参数变更，现在传入 @Builder 组件
 
