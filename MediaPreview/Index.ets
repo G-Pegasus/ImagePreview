@@ -1,3 +1,9 @@
+export { MediaPreviewPromptAction } from './src/main/ets/models/MediaPreviewPromptAction'
+
+export { DefaultMediaModel, DefaultMediaType } from './src/main/ets/default/DefaultMediaModel'
+
+export { PromptActionBaseBean } from './src/main/ets/utils/PromptActionTool'
+
 export { MediaPreview } from './src/main/ets/MediaPreview'
 
 export { PromptActionTool } from './src/main/ets/utils/PromptActionTool'

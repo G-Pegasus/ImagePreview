@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.5] 2024年11月18日
+* 暴露部分api
+* 修复已知问题
+
 ## [1.0.4] 2024年10月29日
 * 增加 `contentBuilder`，可自定义preview
 * 完善自定义demo

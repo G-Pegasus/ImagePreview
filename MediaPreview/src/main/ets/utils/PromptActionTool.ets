@@ -43,6 +43,7 @@ export class PromptActionTool {
         autoCancel: true,
         maskColor: Color.Transparent,
         transition: TransitionEffect.IDENTITY,
+        keyboardAvoidMode: KeyboardAvoidMode.NONE,
         onWillDismiss: (action: DismissDialogAction) => {
           if (action.reason == DismissReason.PRESS_BACK) {
             value.params.needDismiss = true
