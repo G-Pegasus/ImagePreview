@@ -190,6 +190,8 @@ export struct MediaPreviewComponent {
   }
 
   startAnimation() {
+    // @issue https://gitee.com/lyb5834/media-preview/issues/IB6B0R
+    if (this.animating) return
     this.getInitUIInfo()
     this.animating = true
     animateTo({
@@ -206,6 +208,8 @@ export struct MediaPreviewComponent {
   }
 
   closeAnimation() {
+    // @issue https://gitee.com/lyb5834/media-preview/issues/IB6B0R
+    if (this.animating) return
     this.getPreviewUIInfo(this.currentPage)
     this.animating = true
     this.thumbX = px2vp(this.previewComponentInfo?.screenOffset?.x) + this.currentOffsetX

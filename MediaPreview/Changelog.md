@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.0.6] 2024年11月26日
+* 修复 [#IB6B0R](https://gitee.com/lyb5834/media-preview/issues/IB6B0R) 闪屏的问题
+
 ## [1.0.5] 2024年11月18日
 * 暴露部分api
 * 修复已知问题
