@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.7] 2024年12月05日
+* 修复 [#IB75ET](https://gitee.com/lyb5834/media-preview/issues/IB75ET) 长图无法浏览的问题
+* 优化scale算法
+
 ## [1.0.6] 2024年11月26日
 * 修复 [#IB6B0R](https://gitee.com/lyb5834/media-preview/issues/IB6B0R) 闪屏的问题
 

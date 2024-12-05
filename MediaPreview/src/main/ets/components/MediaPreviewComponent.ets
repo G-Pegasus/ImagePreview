@@ -169,7 +169,9 @@ export struct MediaPreviewComponent {
   }
 
   getPreviewUIInfo(index: number) {
-    let result = this.componentUtils.getRectangleById(`preview+${this.options.idBuilder(this.options.dataSource.getData(index), index)}`)
+    let result =
+      this.componentUtils.getRectangleById(`preview+${this.options.idBuilder(this.options.dataSource.getData(index),
+        index)}`)
     this.previewComponentInfo = result
   }
 
@@ -191,7 +193,9 @@ export struct MediaPreviewComponent {
 
   startAnimation() {
     // @issue https://gitee.com/lyb5834/media-preview/issues/IB6B0R
-    if (this.animating) return
+    if (this.animating) {
+      return
+    }
     this.getInitUIInfo()
     this.animating = true
     animateTo({
@@ -209,7 +213,9 @@ export struct MediaPreviewComponent {
 
   closeAnimation() {
     // @issue https://gitee.com/lyb5834/media-preview/issues/IB6B0R
-    if (this.animating) return
+    if (this.animating) {
+      return
+    }
     this.getPreviewUIInfo(this.currentPage)
     this.animating = true
     this.thumbX = px2vp(this.previewComponentInfo?.screenOffset?.x) + this.currentOffsetX

@@ -17,7 +17,7 @@ export class MediaPreviewOptions {
   /**
    * 最大缩放比例
    */
-  maxScale: number = 2
+  maxScale: number = 3
   /**
    * 额外缩放比例，在最大最小的基础上缩放，提升用户体验
    */
