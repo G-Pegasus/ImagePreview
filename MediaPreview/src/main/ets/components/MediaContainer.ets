@@ -227,7 +227,6 @@ export struct MediaContainer {
     } else if (currentOffsetY < minOffsetY) {
       calculateOffsetY = minOffsetY
     }
-    console.log(`calculateOffsetY = ${calculateOffsetY} scale: ${radio}`)
     return calculateOffsetY
   }
 
