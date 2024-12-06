@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.0.8] 2024年12月06日
+* 优化scale算法，缩放更流畅平滑
+
 ## [1.0.7] 2024年12月05日
 * 修复 [#IB75ET](https://gitee.com/lyb5834/media-preview/issues/IB75ET) 长图无法浏览的问题
 * 优化scale算法
