@@ -51,6 +51,10 @@ export class MediaPreviewOptions {
    */
   contentBuilder?: (item: MediaModel, index: number) => void
   /**
+   * 工具页，（坐标从左上角开始）
+   */
+  toolBuilder?: () => void
+  /**
    * 是否支持缩放，默认是true
    */
   onZoomEnable: (item: MediaModel, index: number) => boolean = () => true
@@ -178,6 +182,14 @@ export class MediaPreviewOptions {
    */
   setContentBuilder(contentBuilder: (item: MediaModel, index: number) => void): MediaPreviewOptions {
     this.contentBuilder = contentBuilder
+    return this
+  }
+
+  /**
+   * 可设置工具栏，坐标从左上角开始
+   */
+  setToolBuilder(toolBuilder: () => void): MediaPreviewOptions {
+    this.toolBuilder = toolBuilder
     return this
   }
 

@@ -13,6 +13,7 @@ export struct MediaPreviewComponent {
   @Require options: MediaPreviewOptions = new MediaPreviewOptions()
   @Require @BuilderParam contentBuilder: (item: MediaModel, index: number) => void
   @BuilderParam thumbBuilder: (item: MediaModel, index: number) => void
+  @BuilderParam toolBuilder: () => void
   @State private currentPage: number = 0
   @State private alpha: number = 0
   @State private currentOffsetX: number = 0
@@ -125,6 +126,10 @@ export struct MediaPreviewComponent {
           .margin({ top: '40vp', right: '40vp' })
       }
       .width('100%')
+
+      if (this.toolBuilder != null) {
+        this.toolBuilder()
+      }
     }
     .width('100%')
     .height('100%')

@@ -1,6 +1,7 @@
 import { MediaPreview, MediaPreviewOptions } from "MediaPreview"
 import { DefaultMediaModel, DefaultMediaType } from "MediaPreview/src/main/ets/default/DefaultMediaModel"
 import { HomeModel } from "../Index"
+import { display } from "@kit.ArkUI"
 
 @Builder
 export function SimpleDemoPageBuilder(name: string, param: object) {
@@ -11,6 +12,8 @@ export function SimpleDemoPageBuilder(name: string, param: object) {
 @Component
 export struct SimpleCustomDemoPage {
   @Prop item: HomeModel
+  private screenWidth: number = px2vp(display.getDefaultDisplaySync().width)
+  private screenHeight: number = px2vp(display.getDefaultDisplaySync().height)
   @State resources: DefaultMediaModel[] = []
   //TODO: 可在初始化的时候set回调，注：options 也不一定需要全局申明，可在点击的时候创建
   options: MediaPreviewOptions = new MediaPreviewOptions()
@@ -31,6 +34,9 @@ export struct SimpleCustomDemoPage {
     })//TODO: 设置 `contentBuilder` 可以自定义preview
     .setContentBuilder((item, index) => {
       this.getContentBuilder(item as DefaultMediaModel, index)
+    })//TODO: 可设置 `toolBuilder`
+    .setToolBuilder(() => {
+      this.customToolBuilder()
     })
   @State index: number = -1
 
@@ -131,5 +137,28 @@ export struct SimpleCustomDemoPage {
     }
     .justifyContent(FlexAlign.Center)
     .width("100%")
+  }
+
+  // 自定义的工具栏不要太大，会影响下面的预览视图的手势响应
+  @Builder
+  customToolBuilder() {
+    Row({ space: 10 }) {
+      Text(`第 ${this.index + 1} 页，共${this.options.dataSource.totalCount()}页`)
+        .fontSize(12)
+        .fontColor(Color.White)
+
+      Image($r('sys.media.ohos_ic_public_edit'))
+        .fillColor(Color.White)
+        .width(15)
+    }
+    .backgroundColor("#80000000")
+    .borderRadius(2)
+    .padding(4)
+    .margin({
+      left: this.screenWidth - 130,
+      top: this.screenHeight - 60,
+      right: 10,
+      bottom: 40,
+    })
   }
 }

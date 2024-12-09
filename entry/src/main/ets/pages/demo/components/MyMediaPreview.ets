@@ -13,6 +13,8 @@ export struct MyMediaPreview {
     MediaPreviewComponent({
       promptAction: this.action,
       options: this.action.options,
+      thumbBuilder: this.action.options.thumbBuilder,
+      toolBuilder: this.action.options.toolBuilder,
       contentBuilder: (item: MediaModel, index: number) => {
         if ((item as DefaultMediaModel).type == DefaultMediaType.IMAGE) {
           this.imageBuilder(item, index)

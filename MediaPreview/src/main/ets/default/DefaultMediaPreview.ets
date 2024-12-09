@@ -22,6 +22,7 @@ export struct DefaultMediaPreview {
           }
         },
       thumbBuilder: this.action.options.thumbBuilder,
+      toolBuilder: this.action.options.toolBuilder,
     })
       .width('100%')
       .height('100%')

@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.9] 2024年12月09日
+* 支持预览放大的时候进行返回和切换预览 [#IB8WX4](https://gitee.com/lyb5834/media-preview/issues/IB8WX4)
+* 支持扩展自定义视图 [#IB9FJP](https://gitee.com/lyb5834/media-preview/issues/IB9FJP)
+
 ## [1.0.8] 2024年12月06日
 * 优化scale算法，缩放更流畅平滑
 

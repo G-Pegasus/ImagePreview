@@ -12,7 +12,7 @@ export struct MediaContainer {
   private currentPanOffsetX: number = 0
   private currentPanOffsetY: number = 0
   @State private currentScaleRatio: number = 1
-  private preScaleRadio: number = 0
+  private preScaleRatio: number = 0
   private isPinching: boolean = false
   private panOption: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.All })
   private contentWidth: number = 0
@@ -28,6 +28,7 @@ export struct MediaContainer {
           this.contentBuilder()
         }
         .width(this.itemWidth * this.currentScaleRatio)
+        .renderFit(RenderFit.CENTER)
         .onAreaChange(() => {
           if (this.currentScaleRatio == 1) {
             const h_res = this.hScroller.getItemRect(0)
@@ -45,6 +46,9 @@ export struct MediaContainer {
         scrollForward: NestedScrollMode.SELF_FIRST,
         scrollBackward: NestedScrollMode.PARENT_FIRST
       })
+      .onScrollStop(() => {
+        this.setPanDirection()
+      })
     }
     .width('100%')
     .scrollBar(BarState.Off)
@@ -57,6 +61,19 @@ export struct MediaContainer {
     .onAreaChange((_oldValue, newValue) => {
       this.itemWidth = Number.parseFloat(newValue.width.toString())
     })
+    .onScrollStop(() => {
+      this.setPanDirection()
+    })
+    .onVisibleAreaChange([0.0, 1.0], (isVisible, currentRatio) => {
+      if (isVisible) {
+        this.setPanDirection()
+      }
+      if (currentRatio == 0) {
+        setTimeout(() => {
+          this.currentScaleRatio = 1
+        }, 300)
+      }
+    })
     .gesture(
       GestureGroup(
         GestureMode.Parallel,
@@ -67,16 +84,18 @@ export struct MediaContainer {
             this.setPanDirection()
             this.currentPanOffsetY = this.vScroller.currentOffset().yOffset
             this.currentPanOffsetX = this.hScroller.currentOffset().xOffset
-            this.preScaleRadio = this.currentScaleRatio
+            this.preScaleRatio = this.currentScaleRatio
             this.currentMediaCenter = {
-              width: (this.hScroller.currentOffset().xOffset + event.pinchCenterX) / (this.contentWidth * this.preScaleRadio),
-              height: (this.vScroller.currentOffset().yOffset + event.pinchCenterY) / (this.contentHeight * this.preScaleRadio)
+              width: (this.hScroller.currentOffset().xOffset + event.pinchCenterX) /
+                (this.contentWidth * this.preScaleRatio),
+              height: (this.vScroller.currentOffset().yOffset + event.pinchCenterY) /
+                (this.contentHeight * this.preScaleRatio)
             }
             this.isPinching = true
           })
           .onActionUpdate((event) => {
             // 修改比例
-            const temp = event.scale * this.preScaleRadio
+            const temp = event.scale * this.preScaleRatio
             if (temp < this.options.minScale) {
               this.currentScaleRatio = this.options.minScale
             } else if (temp > this.options.maxScale + this.options.extraScale) {
@@ -94,13 +113,16 @@ export struct MediaContainer {
               xOffset: 0,
               yOffset: this.calculateOffsetY(event.pinchCenterY, this.currentScaleRatio)
             })
+            this.setPanDirection()
           })
           .onActionEnd((event) => {
             this.isPinching = false
             this.setPanDirection()
             this.currentMediaCenter = {
-              width: (this.hScroller.currentOffset().xOffset + event.pinchCenterX) / (this.contentWidth * this.currentScaleRatio),
-              height: (this.vScroller.currentOffset().yOffset + event.pinchCenterY) / (this.contentHeight * this.currentScaleRatio)
+              width: (this.hScroller.currentOffset().xOffset + event.pinchCenterX) /
+                (this.contentWidth * this.currentScaleRatio),
+              height: (this.vScroller.currentOffset().yOffset + event.pinchCenterY) /
+                (this.contentHeight * this.currentScaleRatio)
             }
             if (this.currentScaleRatio < 1) {
               this.onAnimation(() => {
@@ -117,8 +139,10 @@ export struct MediaContainer {
                 })
                 this.setPanDirection()
                 this.currentMediaCenter = {
-                  width: (this.hScroller.currentOffset().xOffset + event.pinchCenterX) / (this.contentWidth * this.currentScaleRatio),
-                  height: (this.vScroller.currentOffset().yOffset + event.pinchCenterY) / (this.contentHeight * this.currentScaleRatio)
+                  width: (this.hScroller.currentOffset().xOffset + event.pinchCenterX) /
+                    (this.contentWidth * this.currentScaleRatio),
+                  height: (this.vScroller.currentOffset().yOffset + event.pinchCenterY) /
+                    (this.contentHeight * this.currentScaleRatio)
                 }
               })
             }
@@ -135,8 +159,10 @@ export struct MediaContainer {
 
             const fingerInfo = event.fingerList[0]
             this.currentMediaCenter = {
-              width: (this.hScroller.currentOffset().xOffset + fingerInfo.localX) / (this.contentWidth * this.currentScaleRatio),
-              height: (this.vScroller.currentOffset().yOffset + fingerInfo.localY) / (this.contentHeight * this.currentScaleRatio)
+              width: (this.hScroller.currentOffset().xOffset + fingerInfo.localX) /
+                (this.contentWidth * this.currentScaleRatio),
+              height: (this.vScroller.currentOffset().yOffset + fingerInfo.localY) /
+                (this.contentHeight * this.currentScaleRatio)
             }
             if (this.currentScaleRatio === 1) {
               this.onAnimation(() => {
@@ -151,8 +177,10 @@ export struct MediaContainer {
                 })
                 this.setPanDirection()
                 this.currentMediaCenter = {
-                  width: (this.hScroller.currentOffset().xOffset + fingerInfo.localX) / (this.contentWidth * this.currentScaleRatio),
-                  height: (this.vScroller.currentOffset().yOffset + fingerInfo.localY) / (this.contentHeight * this.currentScaleRatio)
+                  width: (this.hScroller.currentOffset().xOffset + fingerInfo.localX) /
+                    (this.contentWidth * this.currentScaleRatio),
+                  height: (this.vScroller.currentOffset().yOffset + fingerInfo.localY) /
+                    (this.contentHeight * this.currentScaleRatio)
                 }
               })
             } else {
@@ -168,8 +196,10 @@ export struct MediaContainer {
                 })
                 this.setPanDirection()
                 this.currentMediaCenter = {
-                  width: (this.hScroller.currentOffset().xOffset + fingerInfo.localX) / (this.contentWidth * this.currentScaleRatio),
-                  height: (this.vScroller.currentOffset().yOffset + fingerInfo.localY) / (this.contentHeight * this.currentScaleRatio)
+                  width: (this.hScroller.currentOffset().xOffset + fingerInfo.localX) /
+                    (this.contentWidth * this.currentScaleRatio),
+                  height: (this.vScroller.currentOffset().yOffset + fingerInfo.localY) /
+                    (this.contentHeight * this.currentScaleRatio)
                 }
               })
             }
@@ -227,15 +257,15 @@ export struct MediaContainer {
     })
   }
 
-  calculateOffsetX(offsetX: number, radio: number): number {
-    if (this.contentWidth * radio <= this.screenWidth) {
+  calculateOffsetX(offsetX: number, ratio: number): number {
+    if (this.contentWidth * ratio <= this.screenWidth) {
       return 0
     }
     const minOffsetX = 0
-    const maxOffsetX = this.contentWidth * radio - this.screenWidth
+    const maxOffsetX = this.contentWidth * ratio - this.screenWidth
     const currentOffsetX = this.currentPanOffsetX
     let calculateOffsetX =
-      this.currentMediaCenter.width * this.contentWidth * radio - offsetX
+      this.currentMediaCenter.width * this.contentWidth * ratio - offsetX
     if (calculateOffsetX > maxOffsetX) {
       calculateOffsetX = maxOffsetX
     } else if (currentOffsetX < minOffsetX) {
@@ -244,15 +274,15 @@ export struct MediaContainer {
     return calculateOffsetX
   }
 
-  calculateOffsetY(offsetY: number, radio: number): number {
-    if (this.contentHeight * radio <= this.screenHeight) {
+  calculateOffsetY(offsetY: number, ratio: number): number {
+    if (this.contentHeight * ratio <= this.screenHeight) {
       return 0
     }
     const minOffsetY = 0
-    const maxOffsetY = this.contentHeight * radio - this.screenHeight
+    const maxOffsetY = this.contentHeight * ratio - this.screenHeight
     const currentOffsetY = this.currentPanOffsetY
     let calculateOffsetY =
-      this.currentMediaCenter.height * this.contentHeight * radio - offsetY
+      this.currentMediaCenter.height * this.contentHeight * ratio - offsetY
     if (calculateOffsetY > maxOffsetY) {
       calculateOffsetY = maxOffsetY
     } else if (currentOffsetY < minOffsetY) {
@@ -267,13 +297,47 @@ export struct MediaContainer {
   }
 
   setPanDirection() {
-    if (this.isLongPicture()) {
+    if (this.isLongPicture() && this.currentScaleRatio == 1) {
       if (this.vScroller.currentOffset().yOffset == 0) {
         this.panOption.setDirection(PanDirection.Up)
       } else if (this.vScroller.isAtEnd()) {
         this.panOption.setDirection(PanDirection.Down)
       } else {
         this.panOption.setDirection(PanDirection.Vertical)
+      }
+    } else if (this.currentScaleRatio > 1) {
+      const maxOffsetX = Math.ceil(this.contentWidth * this.currentScaleRatio - this.screenWidth)
+      const maxOffsetY = Math.ceil(this.contentHeight * this.currentScaleRatio - this.screenHeight)
+      const currentOffsetX = Math.ceil(this.hScroller.currentOffset().xOffset)
+      const currentOffsetY = Math.ceil(this.vScroller.currentOffset().yOffset)
+      if (maxOffsetY <= 0) {
+        if (currentOffsetX == 0) {
+          this.panOption.setDirection(PanDirection.Left)
+        } else if (currentOffsetX >= maxOffsetX) {
+          this.panOption.setDirection(PanDirection.Right)
+        } else {
+          this.panOption.setDirection(PanDirection.Horizontal)
+        }
+      } else {
+        if (currentOffsetX == 0 && currentOffsetY == 0) {
+          this.panOption.setDirection(PanDirection.Left | PanDirection.Up)
+        } else if (currentOffsetX == 0 && currentOffsetY >= maxOffsetY) {
+          this.panOption.setDirection(PanDirection.Left | PanDirection.Down)
+        } else if (currentOffsetX >= maxOffsetX && currentOffsetY == 0) {
+          this.panOption.setDirection(PanDirection.Right | PanDirection.Up)
+        } else if (currentOffsetX >= maxOffsetX && currentOffsetY >= maxOffsetY) {
+          this.panOption.setDirection(PanDirection.Right | PanDirection.Down)
+        } else if (currentOffsetX == 0) {
+          this.panOption.setDirection(PanDirection.Left | PanDirection.Vertical)
+        } else if (currentOffsetX >= maxOffsetX) {
+          this.panOption.setDirection(PanDirection.Right | PanDirection.Vertical)
+        } else if (currentOffsetY == 0) {
+          this.panOption.setDirection(PanDirection.Horizontal | PanDirection.Up)
+        } else if (currentOffsetY >= maxOffsetY) {
+          this.panOption.setDirection(PanDirection.Horizontal | PanDirection.Down)
+        } else {
+          this.panOption.setDirection(PanDirection.All)
+        }
       }
     } else {
       this.panOption.setDirection(PanDirection.All)
