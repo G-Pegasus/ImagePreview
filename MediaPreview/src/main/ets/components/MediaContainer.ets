@@ -98,8 +98,8 @@ export struct MediaContainer {
             const temp = event.scale * this.preScaleRatio
             if (temp < this.options.minScale) {
               this.currentScaleRatio = this.options.minScale
-            } else if (temp > this.options.maxScale + this.options.extraScale) {
-              this.currentScaleRatio = this.options.maxScale + this.options.extraScale
+            } else if (temp > this.options.maxScale * (1 + this.options.extraScale)) {
+              this.currentScaleRatio = this.options.maxScale * (1 + this.options.extraScale)
             } else {
               this.currentScaleRatio = temp
             }
@@ -207,7 +207,7 @@ export struct MediaContainer {
 
         // 拖拽手势，用于预览
         PanGesture(this.panOption)
-          .onActionStart((event: GestureEvent) => {
+          .onActionStart((_event: GestureEvent) => {
             this.currentPanOffsetY = this.vScroller.currentOffset().yOffset
             this.currentPanOffsetX = this.hScroller.currentOffset().xOffset
             this.setPanDirection()

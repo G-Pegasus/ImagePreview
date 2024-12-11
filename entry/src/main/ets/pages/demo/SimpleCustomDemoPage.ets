@@ -1,7 +1,7 @@
 import { MediaPreview, MediaPreviewOptions } from "MediaPreview"
 import { DefaultMediaModel, DefaultMediaType } from "MediaPreview/src/main/ets/default/DefaultMediaModel"
 import { HomeModel } from "../Index"
-import { display } from "@kit.ArkUI"
+import { promptAction } from "@kit.ArkUI"
 
 @Builder
 export function SimpleDemoPageBuilder(name: string, param: object) {
@@ -12,8 +12,6 @@ export function SimpleDemoPageBuilder(name: string, param: object) {
 @Component
 export struct SimpleCustomDemoPage {
   @Prop item: HomeModel
-  private screenWidth: number = px2vp(display.getDefaultDisplaySync().width)
-  private screenHeight: number = px2vp(display.getDefaultDisplaySync().height)
   @State resources: DefaultMediaModel[] = []
   //TODO: 可在初始化的时候set回调，注：options 也不一定需要全局申明，可在点击的时候创建
   options: MediaPreviewOptions = new MediaPreviewOptions()
@@ -61,6 +59,10 @@ export struct SimpleCustomDemoPage {
       new DefaultMediaModel(
         'https://gd-hbimg.huaban.com/fedf4f47abe4ca16ab6432480c2b47233317d9462caa88-d9fyor_fw236',
         'https://gd-hbimg.huaban.com/fedf4f47abe4ca16ab6432480c2b47233317d9462caa88-d9fyor_fw236'
+      ),
+      new DefaultMediaModel(
+        'https://img95.699pic.com/photo/50080/3093.jpg_wh300.jpg',
+        'https://img95.699pic.com/photo/50080/3093.jpg_wh300.jpg'
       ),
       new DefaultMediaModel(
         'https://mh.storage.shmedia.tech/2e3e00c3ae1945c4bd7ac8078dbb7a83.mp4',
@@ -139,26 +141,37 @@ export struct SimpleCustomDemoPage {
     .width("100%")
   }
 
-  // 自定义的工具栏不要太大，会影响下面的预览视图的手势响应
+  // 自定义的工具栏
   @Builder
   customToolBuilder() {
-    Row({ space: 10 }) {
-      Text(`第 ${this.index + 1} 页，共${this.options.dataSource.totalCount()}页`)
-        .fontSize(12)
-        .fontColor(Color.White)
+    Column() {
+      Blank()
+      Row({ space: 10 }) {
+        Text(`第 ${this.index + 1} 页，共${this.options.dataSource.totalCount()}页`)
+          .fontSize(12)
+          .fontColor(Color.White)
 
-      Image($r('sys.media.ohos_ic_public_edit'))
-        .fillColor(Color.White)
-        .width(15)
+        Image($r('sys.media.ohos_ic_public_share'))
+          .fillColor(Color.White)
+          .width(15)
+          .onClick(() => {
+            promptAction.showToast({
+              message: `点击了第${this.index + 1}个资源的分享按钮`,
+              duration: 2000,
+              bottom: "center",
+            })
+          })
+      }
+      .backgroundColor("#80000000")
+      .borderRadius(2)
+      .padding(4)
+      .margin({
+        right: 10,
+        bottom: 40,
+      })
     }
-    .backgroundColor("#80000000")
-    .borderRadius(2)
-    .padding(4)
-    .margin({
-      left: this.screenWidth - 130,
-      top: this.screenHeight - 60,
-      right: 10,
-      bottom: 40,
-    })
+    .width('100%')
+    .height('100%')
+    .alignItems(HorizontalAlign.End)
   }
 }

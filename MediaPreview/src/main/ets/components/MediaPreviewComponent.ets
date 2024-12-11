@@ -128,7 +128,13 @@ export struct MediaPreviewComponent {
       .width('100%')
 
       if (this.toolBuilder != null) {
-        this.toolBuilder()
+        Column() {
+          this.toolBuilder()
+        }
+        .hitTestBehavior(HitTestMode.Transparent)
+        .opacity(this.alpha)
+        .width('100%')
+        .height('100%')
       }
     }
     .width('100%')

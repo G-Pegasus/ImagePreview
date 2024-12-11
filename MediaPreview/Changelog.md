@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.0] 2024年12月11日
+* `toolBuilder` 优化
+* demo 完善，添加了横向、竖向长图的效果
+
 ## [1.0.9] 2024年12月09日
 * 支持预览放大的时候进行返回和切换预览 [#IB8WX4](https://gitee.com/lyb5834/media-preview/issues/IB8WX4)
 * 支持扩展自定义视图 [#IB9FJP](https://gitee.com/lyb5834/media-preview/issues/IB9FJP)

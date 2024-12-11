@@ -39,6 +39,10 @@ export struct CustomDemoPage {
         'https://gd-hbimg.huaban.com/fedf4f47abe4ca16ab6432480c2b47233317d9462caa88-d9fyor_fw236'
       ),
       new MyMediaModel(
+        'https://img95.699pic.com/photo/50080/3093.jpg_wh300.jpg',
+        'https://img95.699pic.com/photo/50080/3093.jpg_wh300.jpg'
+      ),
+      new MyMediaModel(
         'https://mh.storage.shmedia.tech/2e3e00c3ae1945c4bd7ac8078dbb7a83.mp4',
         'https://mh.storage.shmedia.tech/2e3e00c3ae1945c4bd7ac8078dbb7a83.mp4?vframe/jpg/offset/0',
         MyMediaModelType.VIDEO,

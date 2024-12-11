@@ -51,7 +51,7 @@ export class MediaPreviewOptions {
    */
   contentBuilder?: (item: MediaModel, index: number) => void
   /**
-   * 工具页，（坐标从左上角开始）
+   * 工具页
    */
   toolBuilder?: () => void
   /**
@@ -186,7 +186,7 @@ export class MediaPreviewOptions {
   }
 
   /**
-   * 可设置工具栏，坐标从左上角开始
+   * 可设置工具栏
    */
   setToolBuilder(toolBuilder: () => void): MediaPreviewOptions {
     this.toolBuilder = toolBuilder
