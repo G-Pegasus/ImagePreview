@@ -88,6 +88,8 @@ export class PromptActionTool {
       }
       if (info) {
         promptAction.closeCustomDialog(info.componentContent)
+        // @issue #IBAP41  https://gitee.com/lyb5834/media-preview/issues/IBAP41 弹窗关闭后销毁
+        info.componentContent.dispose()
       } else {
         console.error('PromptActionUtils', ` closeCustomDialog error = info is undefined`)
       }

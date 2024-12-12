@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.1.1] 2024年12月12日
+* 修复弹窗关闭时不销毁的bug [#IBAP41](https://gitee.com/lyb5834/media-preview/issues/IBAP41)
+
 ## [1.1.0] 2024年12月11日
 * `toolBuilder` 优化
 * demo 完善，添加了横向、竖向长图的效果
