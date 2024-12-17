@@ -87,7 +87,7 @@ export class PromptActionTool {
         info = promptActionInfos.length > 0 ? promptActionInfos[0] : undefined
       }
       if (info) {
-        promptAction.closeCustomDialog(info.componentContent)
+        await promptAction.closeCustomDialog(info.componentContent)
         // @issue #IBAP41  https://gitee.com/lyb5834/media-preview/issues/IBAP41 弹窗关闭后销毁
         info.componentContent.dispose()
       } else {

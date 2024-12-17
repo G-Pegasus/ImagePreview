@@ -1,5 +1,6 @@
 import { MediaPreviewOptions } from '../models/MediaPreviewOptions'
 import { display } from '@kit.ArkUI'
+import { appManager, common } from '@kit.AbilityKit'
 
 @Component
 export struct MediaContainer {
@@ -65,14 +66,23 @@ export struct MediaContainer {
       this.setPanDirection()
     })
     .onVisibleAreaChange([0.0, 1.0], (isVisible, currentRatio) => {
-      if (isVisible) {
-        this.setPanDirection()
-      }
-      if (currentRatio == 0) {
-        setTimeout(() => {
-          this.currentScaleRatio = 1
-        }, 300)
-      }
+      // @issue #IBBN8Y  https://gitee.com/lyb5834/media-preview/issues/IBBN8Y 只在前台活跃时还原
+      let applicationContext = (getContext() as common.UIAbilityContext).getApplicationContext()
+      applicationContext.getRunningProcessInformation((err, data) => {
+        if (data && data.length > 0) {
+          let processInfo = data[0]
+          if (processInfo.state == appManager.ProcessState.STATE_ACTIVE) {
+            if (isVisible) {
+              this.setPanDirection()
+            }
+            if (currentRatio == 0) {
+              setTimeout(() => {
+                this.currentScaleRatio = 1
+              }, 300)
+            }
+          }
+        }
+      })
     })
     .gesture(
       GestureGroup(
