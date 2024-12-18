@@ -102,7 +102,7 @@ export struct VideoPlayer {
       })
       .objectFit(ImageFit.Contain)// 自适应视频的最佳状态，不要拉伸视频
       .controls(false)
-      .autoPlay(true)
+      .autoPlay(false)//#issue IBC1NZ https://gitee.com/lyb5834/media-preview/issues/IBC1NZ 视频不设置自动播放
       .loop(true)
   }
 
