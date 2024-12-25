@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.1.3] 2024年12月25日
+* 增加手动关闭preview的功能
+
 ## [1.1.2] 2024年12月17日
 * 修复图片放大状态下切前后台会自动还原的bug [#IBBN8Y](https://gitee.com/lyb5834/media-preview/issues/IBBN8Y)
 * 视频关闭自动播放 [#IBC1NZ](https://gitee.com/lyb5834/media-preview/issues/IBC1NZ)

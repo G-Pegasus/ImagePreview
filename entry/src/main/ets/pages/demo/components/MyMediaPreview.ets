@@ -1,4 +1,10 @@
-import { MediaModel, MediaPreviewComponent, MediaPreviewOptions, PromptActionTool } from "MediaPreview"
+import {
+  MediaModel,
+  MediaPreviewComponent,
+  MediaPreviewOptions,
+  PreviewCloseParam,
+  PromptActionTool
+} from "MediaPreview"
 import { DefaultMediaModel, DefaultMediaType } from "MediaPreview/src/main/ets/default/DefaultMediaModel"
 import { MediaPreviewPromptAction } from "MediaPreview/src/main/ets/models/MediaPreviewPromptAction"
 import { MyImageItem } from "./MyImageItem"
@@ -58,9 +64,13 @@ export function MyMediaPreviewBuilder(action: MediaPreviewPromptAction) {
 export class CustomMediaPreview {
   static open(uiContext: UIContext, options: MediaPreviewOptions) {
     let value = new MediaPreviewPromptAction(options)
-    PromptActionTool.openCustomDialog<MediaPreviewPromptAction>(uiContext,{
+    PromptActionTool.openCustomDialog<MediaPreviewPromptAction>(uiContext, {
       builder: wrapBuilder(MyMediaPreviewBuilder),
       params: value,
     })
+  }
+
+  static close(params?: PreviewCloseParam) {
+    PromptActionTool.closePreview(params)
   }
 }

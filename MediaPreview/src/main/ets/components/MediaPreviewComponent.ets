@@ -38,7 +38,7 @@ export struct MediaPreviewComponent {
 
   valueChanged() {
     if (this.promptAction.needDismiss) {
-      this.closeAnimation()
+      this.closeAnimation(this.promptAction.dismissAnimation)
     }
   }
 
@@ -222,7 +222,7 @@ export struct MediaPreviewComponent {
     })
   }
 
-  closeAnimation() {
+  closeAnimation(animated: boolean = true) {
     // @issue https://gitee.com/lyb5834/media-preview/issues/IB6B0R
     if (this.animating) {
       return
@@ -234,7 +234,7 @@ export struct MediaPreviewComponent {
     this.thumbWidth = px2vp(this.previewComponentInfo?.size?.width) * this.scaleRadio
     this.thumbHeight = px2vp(this.previewComponentInfo?.size?.height) * this.scaleRadio
     animateTo({
-      duration: this.options.duration, onFinish: () => {
+      duration: animated ? this.options.duration : 0, onFinish: () => {
         this.animating = false
         this.options.onBackListener()
         PromptActionTool.closeCustomDialog(this.getUIContext(), this.promptAction.dialogId)

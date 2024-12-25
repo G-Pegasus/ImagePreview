@@ -9,6 +9,7 @@ export interface PromptActionOptions<T extends PromptActionBaseBean> {
 export abstract class PromptActionBaseBean {
   dialogId: string
   needDismiss: boolean = false
+  dismissAnimation: boolean = true
 
   constructor(dialogId: string = '') {
     if (dialogId === '') {
@@ -19,14 +20,14 @@ export abstract class PromptActionBaseBean {
 }
 
 interface PromptActionInfo {
-  dialogId: string
+  action: PromptActionBaseBean
   componentContent: ComponentContent<object>
 }
 
 let promptActionInfos: PromptActionInfo[] = []
 
 function getPromptActionInfoByDialogId(dialogId: string): PromptActionInfo | undefined {
-  return promptActionInfos.find(item => dialogId == item.dialogId)
+  return promptActionInfos.find(item => dialogId == item.action.dialogId)
 }
 
 export class PromptActionTool {
@@ -53,7 +54,7 @@ export class PromptActionTool {
           PromptActionTool.updateCustomDialog<T>(value.params)
         },
         onWillDisappear: () => {
-          const index = promptActionInfos.findIndex(item => item.dialogId == value.params.dialogId)
+          const index = promptActionInfos.findIndex(item => item.action.dialogId == value.params.dialogId)
           if (index >= 0) {
             promptActionInfos.splice(index, 1)
           } else {
@@ -64,7 +65,7 @@ export class PromptActionTool {
 
       if (!PromptActionTool.existsCustomDialog(value.params.dialogId)) {
         promptActionInfos.unshift({
-          dialogId: value.params.dialogId,
+          action: value.params,
           componentContent: componentContent
         })
         promptAction.openCustomDialog(componentContent, options)
@@ -109,10 +110,32 @@ export class PromptActionTool {
   }
 
   /**
+   * 关闭预览
+   */
+  static closePreview(params?: PreviewCloseParam) {
+    let promptActionInfo: PromptActionInfo | undefined
+    if (params?.dialogId) {
+      promptActionInfo = getPromptActionInfoByDialogId(params.dialogId)
+    } else {
+      promptActionInfo = promptActionInfos.length > 0 ? promptActionInfos[0] : undefined
+    }
+    if (promptActionInfo) {
+      promptActionInfo.action.needDismiss = true
+      promptActionInfo.action.dismissAnimation = params?.animated ?? true
+      PromptActionTool.updateCustomDialog(promptActionInfo.action)
+    }
+  }
+
+  /**
    * 是否存在自定义弹窗
    */
   static existsCustomDialog(dialogId: string): boolean {
     let info = getPromptActionInfoByDialogId(dialogId)
     return info != undefined
   }
+}
+
+export interface PreviewCloseParam {
+  dialogId?: string
+  animated?: boolean
 }

@@ -153,8 +153,9 @@ export struct SimpleCustomDemoPage {
 
         Image($r('sys.media.ohos_ic_public_share'))
           .fillColor(Color.White)
-          .width(15)
+          .width(20)
           .onClick(() => {
+            MediaPreview.close({ animated: this.index % 2 == 0 })
             promptAction.showToast({
               message: `点击了第${this.index + 1}个资源的分享按钮`,
               duration: 2000,
