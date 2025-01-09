@@ -30,6 +30,8 @@ export struct MediaPreviewComponent {
   @State private thumbX?: Length = 0
   @State private thumbY?: Length = 0
   private componentUtils: ComponentUtils.ComponentUtils = this.getUIContext().getComponentUtils()
+  private isScrolling: boolean = false
+  private timeOutTag: number = 0
 
   aboutToAppear() {
     this.currentPage = this.options.initIndex
@@ -76,7 +78,10 @@ export struct MediaPreviewComponent {
             MediaContainer({
               options: this.options,
               contentBuilder: () => this.contentBuilder(item, index),
-              zoomEnable: this.options.onZoomEnable(item, index)
+              zoomEnable: this.options.onZoomEnable(item, index),
+              onTap: () => {
+                this.closeAnimation()
+              }
             })
               .id(`preview+${this.options.idBuilder(item, index)}`)
               .offset({
@@ -105,6 +110,15 @@ export struct MediaPreviewComponent {
       .height("100%")
       .loop(false)
       .clip(true)
+      .onAnimationStart(() => {
+        this.isScrolling = true
+      })
+      .onAnimationEnd(() => {
+        clearTimeout(this.timeOutTag)
+        this.timeOutTag = setTimeout(() => {
+          this.isScrolling = false
+        }, 100)
+      })
       .onChange((index) => {
         this.currentPage = index
         this.options.onPageChangedListener(this.options.dataSource.getData(index), index)
@@ -177,6 +191,14 @@ export struct MediaPreviewComponent {
           }
         })
     )
+    .onGestureJudgeBegin((gestureInfo, _event) => {
+      if (gestureInfo.type == GestureControl.GestureType.PAN_GESTURE) {
+        if (this.isScrolling) {
+          return GestureJudgeResult.REJECT
+        }
+      }
+      return GestureJudgeResult.CONTINUE
+    })
   }
 
   getPreviewUIInfo(index: number) {

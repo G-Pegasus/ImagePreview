@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.1.4] 2025年01月09日
+* 优化手势事件 [#IBE7I7](https://gitee.com/lyb5834/media-preview/issues/IBE7I7)
+
 ## [1.1.3] 2024年12月25日
 * 增加手动关闭preview的功能
 

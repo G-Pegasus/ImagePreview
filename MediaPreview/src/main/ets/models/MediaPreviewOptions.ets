@@ -170,6 +170,14 @@ export class MediaPreviewOptions {
   }
 
   /**
+   * 设置是否可以缩放
+   */
+  setZoomEnable(zoomBuilder: (item: MediaModel, index: number) => boolean): MediaPreviewOptions {
+    this.onZoomEnable = zoomBuilder
+    return this
+  }
+
+  /**
    * 设置thumb,优化一镜到底效果
    */
   setThumbBuilder(thumbBuilder: (item: MediaModel, index: number) => void): MediaPreviewOptions {

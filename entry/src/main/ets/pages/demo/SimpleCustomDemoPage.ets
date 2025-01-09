@@ -35,6 +35,10 @@ export struct SimpleCustomDemoPage {
     })//TODO: 可设置 `toolBuilder`
     .setToolBuilder(() => {
       this.customToolBuilder()
+    })//TODO: 可设置只有图片可以缩放
+    .setZoomEnable((item) => {
+      const resourceVo = item as DefaultMediaModel
+      return resourceVo.type == DefaultMediaType.IMAGE
     })
   @State index: number = -1
 

@@ -7,6 +7,7 @@ export struct MediaContainer {
   @Require @BuilderParam contentBuilder: () => void
   @Require @Prop options: MediaPreviewOptions
   @Prop zoomEnable: boolean = true
+  onTap?: () => void
   @State private itemWidth: number = 0
   private hScroller: Scroller = new Scroller()
   private vScroller: Scroller = new Scroller()
@@ -21,6 +22,8 @@ export struct MediaContainer {
   private screenWidth: number = px2vp(display.getDefaultDisplaySync().width)
   private screenHeight: number = px2vp(display.getDefaultDisplaySync().height)
   private currentMediaCenter: Size = { width: 0, height: 0 }
+  private isScrolling: boolean = false
+  private timeOutTag: number = 0
 
   build() {
     Scroll(this.vScroller) {
@@ -28,7 +31,7 @@ export struct MediaContainer {
         Column() {
           this.contentBuilder()
         }
-        .width(this.itemWidth * this.currentScaleRatio)
+        .width(this.zoomEnable ? this.itemWidth * this.currentScaleRatio : this.itemWidth)
         .renderFit(RenderFit.CENTER)
         .onAreaChange(() => {
           if (this.currentScaleRatio == 1) {
@@ -47,7 +50,14 @@ export struct MediaContainer {
         scrollForward: NestedScrollMode.SELF_FIRST,
         scrollBackward: NestedScrollMode.PARENT_FIRST
       })
+      .onScrollStart(() => {
+        this.isScrolling = true
+      })
       .onScrollStop(() => {
+        clearTimeout(this.timeOutTag)
+        this.timeOutTag = setTimeout(() => {
+          this.isScrolling = false
+        }, 500)
         this.setPanDirection()
       })
     }
@@ -62,12 +72,23 @@ export struct MediaContainer {
     .onAreaChange((_oldValue, newValue) => {
       this.itemWidth = Number.parseFloat(newValue.width.toString())
     })
+    .onScrollStart(() => {
+      this.isScrolling = true
+    })
     .onScrollStop(() => {
+      // 延迟设置scroll状态，可以有效降低滑动时的单击灵敏度
+      clearTimeout(this.timeOutTag)
+      this.timeOutTag = setTimeout(() => {
+        this.isScrolling = false
+      }, 500)
       this.setPanDirection()
     })
     .onVisibleAreaChange([0.0, 1.0], (isVisible, currentRatio) => {
       // @issue #IBBN8Y  https://gitee.com/lyb5834/media-preview/issues/IBBN8Y 只在前台活跃时还原
       let applicationContext = (getContext() as common.UIAbilityContext).getApplicationContext()
+      if (currentRatio == 0) {
+        clearTimeout(this.timeOutTag)
+      }
       applicationContext.getRunningProcessInformation((err, data) => {
         if (data && data.length > 0) {
           let processInfo = data[0]
@@ -86,11 +107,14 @@ export struct MediaContainer {
     })
     .gesture(
       GestureGroup(
-        GestureMode.Parallel,
+        GestureMode.Exclusive,
 
         // 捏合手势
         PinchGesture()
           .onActionStart((event) => {
+            if (!this.zoomEnable) {
+              return
+            }
             this.setPanDirection()
             this.currentPanOffsetY = this.vScroller.currentOffset().yOffset
             this.currentPanOffsetX = this.hScroller.currentOffset().xOffset
@@ -104,6 +128,9 @@ export struct MediaContainer {
             this.isPinching = true
           })
           .onActionUpdate((event) => {
+            if (!this.zoomEnable) {
+              return
+            }
             // 修改比例
             const temp = event.scale * this.preScaleRatio
             if (temp < this.options.minScale) {
@@ -126,6 +153,9 @@ export struct MediaContainer {
             this.setPanDirection()
           })
           .onActionEnd((event) => {
+            if (!this.zoomEnable) {
+              return
+            }
             this.isPinching = false
             this.setPanDirection()
             this.currentMediaCenter = {
@@ -161,6 +191,9 @@ export struct MediaContainer {
         // 双击手势
         TapGesture({ count: 2 })
           .onAction((event) => {
+            if (!this.zoomEnable) {
+              return
+            }
             this.currentPanOffsetY = this.vScroller.currentOffset().yOffset
             this.currentPanOffsetX = this.hScroller.currentOffset().xOffset
             if (event.fingerList.length == 0) {
@@ -215,6 +248,15 @@ export struct MediaContainer {
             }
           }),
 
+        // 单击手势
+        TapGesture({ count: 1 })
+          .onAction(() => {
+            // 没有event
+            if (!this.isScrolling && !this.isPinching) {
+              this.onTap?.()
+            }
+          }),
+
         // 拖拽手势，用于预览
         PanGesture(this.panOption)
           .onActionStart((_event: GestureEvent) => {
@@ -248,9 +290,6 @@ export struct MediaContainer {
       )
     )
     .onGestureJudgeBegin((gestureInfo, _event) => {
-      if (!this.zoomEnable) {
-        return GestureJudgeResult.REJECT
-      }
       if (gestureInfo.type == GestureControl.GestureType.PAN_GESTURE) {
         if (this.isPinching) {
           return GestureJudgeResult.REJECT
