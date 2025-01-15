@@ -5,7 +5,7 @@ import { appManager, common } from '@kit.AbilityKit'
 @Component
 export struct MediaContainer {
   @Require @BuilderParam contentBuilder: () => void
-  @Require @Prop options: MediaPreviewOptions
+  @Require @Prop options: MediaPreviewOptions<ESObject>
   @Prop zoomEnable: boolean = true
   onTap?: () => void
   @State private itemWidth: number = 0

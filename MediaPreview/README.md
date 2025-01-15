@@ -18,6 +18,22 @@
 |--------|-----------|
 | 1.0.0  | 5.0.0(12) |
 
+#### 1.2.0 迁移攻略
+申明 `options` 的时候需指定model，默认 `DefaultMediaModel`
+
+* 之前
+```
+options: MediaPreviewOptions = new MediaPreviewOptions()
+```
+* 1.2.0 之后
+```
+options: MediaPreviewOptions<DefaultMediaModel> = new MediaPreviewOptions<DefaultMediaModel>()
+```
+* 完全自定义
+```
+options: MediaPreviewOptions<MyMediaModel> = new MediaPreviewOptions<MyMediaModel>()
+```
+
 #### 使用说明
 先设置资源
 ```

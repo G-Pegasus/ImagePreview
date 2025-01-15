@@ -14,7 +14,7 @@ export struct SimpleCustomDemoPage {
   @Prop item: HomeModel
   @State resources: DefaultMediaModel[] = []
   //TODO: 可在初始化的时候set回调，注：options 也不一定需要全局申明，可在点击的时候创建
-  options: MediaPreviewOptions = new MediaPreviewOptions()
+  options: MediaPreviewOptions<DefaultMediaModel> = new MediaPreviewOptions<DefaultMediaModel>()
     .setPageChangedListener((_item, index) => {
       this.index = index
     })
@@ -28,16 +28,16 @@ export struct SimpleCustomDemoPage {
       return `media_${index}`
     })//TODO: 设置thumb可以优化一镜到底效果，可以注释对比效果
     .setThumbBuilder((item, index) => {
-      this.getImageItem(item as DefaultMediaModel, index)
+      this.getImageItem(item , index)
     })//TODO: 设置 `contentBuilder` 可以自定义preview
     .setContentBuilder((item, index) => {
-      this.getContentBuilder(item as DefaultMediaModel, index)
+      this.getContentBuilder(item, index)
     })//TODO: 可设置 `toolBuilder`
     .setToolBuilder(() => {
       this.customToolBuilder()
     })//TODO: 可设置只有图片可以缩放
     .setZoomEnable((item) => {
-      const resourceVo = item as DefaultMediaModel
+      const resourceVo = item
       return resourceVo.type == DefaultMediaType.IMAGE
     })
   @State index: number = -1

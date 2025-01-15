@@ -1,11 +1,11 @@
 import { MediaDataSource } from './MediaDataSource'
 import { MediaModel } from './MediaModel'
 
-export class MediaPreviewOptions {
+export class MediaPreviewOptions<T extends MediaModel> {
   /**
    * 数据源
    */
-  dataSource: MediaDataSource<MediaModel> = new MediaDataSource()
+  dataSource: MediaDataSource<T> = new MediaDataSource()
   /**
    * 初始化index
    */
@@ -41,15 +41,15 @@ export class MediaPreviewOptions {
   /**
    * 设置item的id 默认是 model + index
    */
-  idBuilder: (item: MediaModel, index: number) => string = (item, index) => JSON.stringify(item) + index
+  idBuilder: (item: T, index: number) => string = (item, index) => JSON.stringify(item) + index
   /**
    * 可设置thumb, 必须传@Builder，优化一镜到底效果
    */
-  thumbBuilder?: (item: MediaModel, index: number) => void
+  thumbBuilder?: (item: T, index: number) => void
   /**
    * 预览页，自定义的时候可传
    */
-  contentBuilder?: (item: MediaModel, index: number) => void
+  contentBuilder?: (item: T, index: number) => void
   /**
    * 工具页
    */
@@ -57,11 +57,11 @@ export class MediaPreviewOptions {
   /**
    * 是否支持缩放，默认是true
    */
-  onZoomEnable: (item: MediaModel, index: number) => boolean = () => true
+  onZoomEnable: (item: T, index: number) => boolean = () => true
   /**
    * 长按事件回调
    */
-  onLongPressListener: (item: MediaModel, index: number) => void = () => {
+  onLongPressListener: (item: T, index: number) => void = () => {
   }
   /**
    * 返回回调
@@ -71,10 +71,10 @@ export class MediaPreviewOptions {
   /**
    * page 切换回调
    */
-  onPageChangedListener: (item: MediaModel, index: number) => void = () => {
+  onPageChangedListener: (item: T, index: number) => void = () => {
   }
 
-  constructor(medias: MediaModel[] = [], initIndex: number = 0) {
+  constructor(medias: T[] = [], initIndex: number = 0) {
     this.dataSource.pushData(...medias)
     this.initIndex = initIndex
   }
@@ -83,7 +83,7 @@ export class MediaPreviewOptions {
   /**
    * 设置数据list
    */
-  setMedias(medias: MediaModel[]): MediaPreviewOptions {
+  setMedias(medias: T[]): MediaPreviewOptions<T> {
     this.dataSource.clear()
     this.dataSource.pushData(...medias)
     return this
@@ -92,7 +92,7 @@ export class MediaPreviewOptions {
   /**
    * 增加一条数据
    */
-  addMedia(media: MediaModel): MediaPreviewOptions {
+  addMedia(media: T): MediaPreviewOptions<T> {
     this.dataSource.pushData(media)
     return this
   }
@@ -100,7 +100,7 @@ export class MediaPreviewOptions {
   /**
    * 删除一条数据
    */
-  deleteMedia(index: number): MediaPreviewOptions {
+  deleteMedia(index: number): MediaPreviewOptions<T> {
     this.dataSource.deleteData(index)
     return this
   }
@@ -108,7 +108,7 @@ export class MediaPreviewOptions {
   /**
    * 设置初始化index
    */
-  setInitIndex(initIndex: number): MediaPreviewOptions {
+  setInitIndex(initIndex: number): MediaPreviewOptions<T> {
     this.initIndex = initIndex
     return this
   }
@@ -116,7 +116,7 @@ export class MediaPreviewOptions {
   /**
    * 设置最小缩放比例
    */
-  setMinScale(minScale: number): MediaPreviewOptions {
+  setMinScale(minScale: number): MediaPreviewOptions<T> {
     this.minScale = minScale
     return this
   }
@@ -124,7 +124,7 @@ export class MediaPreviewOptions {
   /**
    * 设置最大缩放比例
    */
-  setMaxScale(maxScale: number): MediaPreviewOptions {
+  setMaxScale(maxScale: number): MediaPreviewOptions<T> {
     this.maxScale = maxScale
     return this
   }
@@ -132,7 +132,7 @@ export class MediaPreviewOptions {
   /**
    * 设置额外缩放比例
    */
-  setExtraScale(extraScale: number): MediaPreviewOptions {
+  setExtraScale(extraScale: number): MediaPreviewOptions<T> {
     this.extraScale = extraScale
     return this
   }
@@ -140,7 +140,7 @@ export class MediaPreviewOptions {
   /**
    * 设置指示器
    */
-  setIndicator(indicator: DotIndicator | DigitIndicator | boolean): MediaPreviewOptions {
+  setIndicator(indicator: DotIndicator | DigitIndicator | boolean): MediaPreviewOptions<T> {
     this.indicator = indicator
     return this
   }
@@ -148,7 +148,7 @@ export class MediaPreviewOptions {
   /**
    * 设置背景色
    */
-  setBackgroundColor(backgroundColor: ResourceColor): MediaPreviewOptions {
+  setBackgroundColor(backgroundColor: ResourceColor): MediaPreviewOptions<T> {
     this.backgroundColor = backgroundColor
     return this
   }
@@ -156,7 +156,7 @@ export class MediaPreviewOptions {
   /**
    * 设置回调
    */
-  setBackListener(onBackListener: () => void): MediaPreviewOptions {
+  setBackListener(onBackListener: () => void): MediaPreviewOptions<T> {
     this.onBackListener = onBackListener
     return this
   }
@@ -164,7 +164,7 @@ export class MediaPreviewOptions {
   /**
    * 设置id
    */
-  setIdBuilder(idBuilder: (item: MediaModel, index: number) => string): MediaPreviewOptions {
+  setIdBuilder(idBuilder: (item: T, index: number) => string): MediaPreviewOptions<T> {
     this.idBuilder = idBuilder
     return this
   }
@@ -172,7 +172,7 @@ export class MediaPreviewOptions {
   /**
    * 设置是否可以缩放
    */
-  setZoomEnable(zoomBuilder: (item: MediaModel, index: number) => boolean): MediaPreviewOptions {
+  setZoomEnable(zoomBuilder: (item: T, index: number) => boolean): MediaPreviewOptions<T> {
     this.onZoomEnable = zoomBuilder
     return this
   }
@@ -180,7 +180,7 @@ export class MediaPreviewOptions {
   /**
    * 设置thumb,优化一镜到底效果
    */
-  setThumbBuilder(thumbBuilder: (item: MediaModel, index: number) => void): MediaPreviewOptions {
+  setThumbBuilder(thumbBuilder: (item: T, index: number) => void): MediaPreviewOptions<T> {
     this.thumbBuilder = thumbBuilder
     return this
   }
@@ -188,7 +188,7 @@ export class MediaPreviewOptions {
   /**
    * 设置content，自定义预览组件
    */
-  setContentBuilder(contentBuilder: (item: MediaModel, index: number) => void): MediaPreviewOptions {
+  setContentBuilder(contentBuilder: (item: T, index: number) => void): MediaPreviewOptions<T> {
     this.contentBuilder = contentBuilder
     return this
   }
@@ -196,7 +196,7 @@ export class MediaPreviewOptions {
   /**
    * 可设置工具栏
    */
-  setToolBuilder(toolBuilder: () => void): MediaPreviewOptions {
+  setToolBuilder(toolBuilder: () => void): MediaPreviewOptions<T> {
     this.toolBuilder = toolBuilder
     return this
   }
@@ -204,7 +204,7 @@ export class MediaPreviewOptions {
   /**
    * 监听page切换
    */
-  setPageChangedListener(onPageChangedListener: (item: MediaModel, index: number) => void): MediaPreviewOptions {
+  setPageChangedListener(onPageChangedListener: (item: T, index: number) => void): MediaPreviewOptions<T> {
     this.onPageChangedListener = onPageChangedListener
     return this
   }
@@ -212,7 +212,7 @@ export class MediaPreviewOptions {
   /**
    * 长按事件监听,自定义时失效
    */
-  setLongPressListener(onLongPressListener: (item: MediaModel, index: number) => void): MediaPreviewOptions {
+  setLongPressListener(onLongPressListener: (item: T, index: number) => void): MediaPreviewOptions<T> {
     this.onLongPressListener = onLongPressListener
     return this
   }
@@ -220,7 +220,7 @@ export class MediaPreviewOptions {
   /**
    * 设置动画时长
    */
-  setDuration(duration: number): MediaPreviewOptions {
+  setDuration(duration: number): MediaPreviewOptions<T> {
     this.duration = duration
     return this
   }
@@ -228,7 +228,7 @@ export class MediaPreviewOptions {
   /**
    * 设置是否显示分页文字
    */
-  setShowPageText(showPageText: boolean): MediaPreviewOptions {
+  setShowPageText(showPageText: boolean): MediaPreviewOptions<T> {
     this.showPageText = showPageText
     return this
   }

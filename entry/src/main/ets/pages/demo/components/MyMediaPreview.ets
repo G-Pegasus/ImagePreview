@@ -5,15 +5,14 @@ import {
   PreviewCloseParam,
   PromptActionTool
 } from "MediaPreview"
-import { DefaultMediaModel, DefaultMediaType } from "MediaPreview/src/main/ets/default/DefaultMediaModel"
 import { MediaPreviewPromptAction } from "MediaPreview/src/main/ets/models/MediaPreviewPromptAction"
 import { MyImageItem } from "./MyImageItem"
-import { MyMediaModel } from "./MyMediaModel"
+import { MyMediaModel, MyMediaModelType } from "./MyMediaModel"
 import { MyVideoItem } from "./MyVideoItem"
 
 @Component
 export struct MyMediaPreview {
-  @Require @Prop action: MediaPreviewPromptAction
+  @Require @Prop action: MediaPreviewPromptAction<MyMediaModel>
 
   build() {
     MediaPreviewComponent({
@@ -21,10 +20,10 @@ export struct MyMediaPreview {
       options: this.action.options,
       thumbBuilder: this.action.options.thumbBuilder,
       toolBuilder: this.action.options.toolBuilder,
-      contentBuilder: (item: MediaModel, index: number) => {
-        if ((item as DefaultMediaModel).type == DefaultMediaType.IMAGE) {
+      contentBuilder: (item: MyMediaModel, index: number) => {
+        if (item.type == MyMediaModelType.IMAGE) {
           this.imageBuilder(item, index)
-        } else if ((item as DefaultMediaModel).type == DefaultMediaType.VIDEO) {
+        } else if (item.type == MyMediaModelType.VIDEO) {
           this.videoBuilder(item, index)
         } else {
           // 音频样式... 自己实现
@@ -36,18 +35,18 @@ export struct MyMediaPreview {
   }
 
   @Builder
-  imageBuilder(item: MediaModel, index: number) {
+  imageBuilder(item: MyMediaModel, index: number) {
     MyImageItem({
-      resource: item as MyMediaModel,
+      resource: item ,
       index: index,
       onLongPressListener: this.action.options.onLongPressListener,
     })
   }
 
   @Builder
-  videoBuilder(item: MediaModel, index: number) {
+  videoBuilder(item: MyMediaModel, index: number) {
     MyVideoItem({
-      resource: item as MyMediaModel,
+      resource: item ,
       index: index,
       onLongPressListener: this.action.options.onLongPressListener,
     })
@@ -55,16 +54,16 @@ export struct MyMediaPreview {
 }
 
 @Builder
-export function MyMediaPreviewBuilder(action: MediaPreviewPromptAction) {
+export function MyMediaPreviewBuilder(action: MediaPreviewPromptAction<ESObject>) {
   MyMediaPreview({
     action: action,
   })
 }
 
 export class CustomMediaPreview {
-  static open(uiContext: UIContext, options: MediaPreviewOptions) {
+  static open<T extends MediaModel>(uiContext: UIContext, options: MediaPreviewOptions<T>) {
     let value = new MediaPreviewPromptAction(options)
-    PromptActionTool.openCustomDialog<MediaPreviewPromptAction>(uiContext, {
+    PromptActionTool.openCustomDialog<MediaPreviewPromptAction<T>>(uiContext, {
       builder: wrapBuilder(MyMediaPreviewBuilder),
       params: value,
     })

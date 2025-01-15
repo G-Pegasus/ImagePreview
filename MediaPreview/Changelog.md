@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.2.0] 2025年01月15日
+* api更新，迁移攻略 [#1.2.0迁移](README.md)
+
 ## [1.1.4] 2025年01月09日
 * 优化手势事件 [#IBE7I7](https://gitee.com/lyb5834/media-preview/issues/IBE7I7)
 

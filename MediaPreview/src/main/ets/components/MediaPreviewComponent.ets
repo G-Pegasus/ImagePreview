@@ -10,9 +10,9 @@ import { PromptActionBaseBean, PromptActionTool } from '../utils/PromptActionToo
 @Component
 export struct MediaPreviewComponent {
   @Link @Watch('valueChanged') promptAction: PromptActionBaseBean
-  @Require options: MediaPreviewOptions = new MediaPreviewOptions()
-  @Require @BuilderParam contentBuilder: (item: MediaModel, index: number) => void
-  @BuilderParam thumbBuilder: (item: MediaModel, index: number) => void
+  @Require options: MediaPreviewOptions<ESObject> = new MediaPreviewOptions()
+  @Require @BuilderParam contentBuilder: (item: ESObject, index: number) => void
+  @BuilderParam thumbBuilder: (item: ESObject, index: number) => void
   @BuilderParam toolBuilder: () => void
   @State private currentPage: number = 0
   @State private alpha: number = 0
@@ -80,7 +80,9 @@ export struct MediaPreviewComponent {
               contentBuilder: () => this.contentBuilder(item, index),
               zoomEnable: this.options.onZoomEnable(item, index),
               onTap: () => {
-                this.closeAnimation()
+                if (!this.isScrolling) {
+                  this.closeAnimation()
+                }
               }
             })
               .id(`preview+${this.options.idBuilder(item, index)}`)
@@ -117,7 +119,7 @@ export struct MediaPreviewComponent {
         clearTimeout(this.timeOutTag)
         this.timeOutTag = setTimeout(() => {
           this.isScrolling = false
-        }, 100)
+        }, 50)
       })
       .onChange((index) => {
         this.currentPage = index
@@ -154,7 +156,9 @@ export struct MediaPreviewComponent {
     .width('100%')
     .height('100%')
     .onClick(() => {
-      this.closeAnimation()
+      if (!this.isScrolling) {
+        this.closeAnimation()
+      }
     })
     .gesture(
       PanGesture({ fingers: 1 })

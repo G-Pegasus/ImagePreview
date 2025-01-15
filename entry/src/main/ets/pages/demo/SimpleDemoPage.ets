@@ -1,4 +1,4 @@
-import { MediaModel, MediaPreview, MediaPreviewOptions } from 'MediaPreview'
+import { MediaPreview, MediaPreviewOptions } from 'MediaPreview'
 import { DefaultMediaModel, DefaultMediaType } from 'MediaPreview/src/main/ets/default/DefaultMediaModel'
 import { HomeModel } from '../Index'
 
@@ -12,7 +12,7 @@ export struct SimpleDemoPage {
   @Prop item: HomeModel
   @State resources: DefaultMediaModel[] = []
   //TODO: 可在初始化的时候set回调，注：options 也不一定需要全局申明，可在点击的时候创建
-  options: MediaPreviewOptions = new MediaPreviewOptions()
+  options: MediaPreviewOptions<DefaultMediaModel> = new MediaPreviewOptions<DefaultMediaModel>()
     .setPageChangedListener((_item, index) => {
       this.index = index
     })
@@ -26,7 +26,7 @@ export struct SimpleDemoPage {
       return `media_${index}`
     })//TODO: 设置thumb可以优化一镜到底效果，可以注释对比效果
     .setThumbBuilder((item, index) => {
-      this.getImageItem(item as DefaultMediaModel, index)
+      this.getImageItem(item, index)
     })
   @State index: number = -1
 

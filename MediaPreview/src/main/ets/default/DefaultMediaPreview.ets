@@ -1,5 +1,4 @@
 import { MediaPreviewComponent } from "../components/MediaPreviewComponent";
-import { MediaModel } from "../models/MediaModel";
 import { MediaPreviewPromptAction } from "../models/MediaPreviewPromptAction";
 import { DefaultImageItem } from "./DefaultImageItem";
 import { DefaultMediaModel, DefaultMediaType } from "./DefaultMediaModel";
@@ -7,15 +6,15 @@ import { DefaultVideoItem } from "./DefaultViedeoItem";
 
 @Component
 export struct DefaultMediaPreview {
-  @Require @Prop action: MediaPreviewPromptAction
+  @Require @Prop action: MediaPreviewPromptAction<DefaultMediaModel>
 
   build() {
     MediaPreviewComponent({
       promptAction: this.action,
       options: this.action.options,
       contentBuilder: this.action.options.contentBuilder ? this.action.options.contentBuilder :
-        (item: MediaModel, index: number) => {
-          if ((item as DefaultMediaModel).type == DefaultMediaType.IMAGE) {
+        (item: DefaultMediaModel, index: number) => {
+          if (item.type == DefaultMediaType.IMAGE) {
             this.imageBuilder(item, index)
           } else {
             this.videoBuilder(item, index)
@@ -29,18 +28,18 @@ export struct DefaultMediaPreview {
   }
 
   @Builder
-  imageBuilder(item: MediaModel, index: number) {
+  imageBuilder(item: DefaultMediaModel, index: number) {
     DefaultImageItem({
-      resource: item as DefaultMediaModel,
+      resource: item,
       index: index,
       onLongPressListener: this.action.options.onLongPressListener,
     })
   }
 
   @Builder
-  videoBuilder(item: MediaModel, index: number) {
+  videoBuilder(item: DefaultMediaModel, index: number) {
     DefaultVideoItem({
-      resource: item as DefaultMediaModel,
+      resource: item,
       index: index,
       onLongPressListener: this.action.options.onLongPressListener,
     })
@@ -48,7 +47,7 @@ export struct DefaultMediaPreview {
 }
 
 @Builder
-export function DefaultMediaPreviewBuilder(action: MediaPreviewPromptAction) {
+export function DefaultMediaPreviewBuilder(action: MediaPreviewPromptAction<ESObject>) {
   DefaultMediaPreview({
     action: action,
   })

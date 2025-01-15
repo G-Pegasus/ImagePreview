@@ -13,7 +13,7 @@ export function CustomDemoPageBuilder(name: string, param: object) {
 export struct CustomDemoPage {
   @Prop item: HomeModel
   @State resources: MyMediaModel[] = []
-  options: MediaPreviewOptions = new MediaPreviewOptions()
+  options: MediaPreviewOptions<MyMediaModel> = new MediaPreviewOptions()
   @State index: number = -1
 
   aboutToAppear(): void {
@@ -60,7 +60,7 @@ export struct CustomDemoPage {
         console.log(`长按了第${index + 1}个资源`)
       })//TODO: 设置thumb可以优化一镜到底效果，可以注释对比效果
       .setThumbBuilder((item, index) => {
-        this.getImageItem(item as MyMediaModel, index)
+        this.getImageItem(item, index)
       })
   }
 
