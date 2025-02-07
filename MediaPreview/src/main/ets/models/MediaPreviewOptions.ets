@@ -33,7 +33,7 @@ export class MediaPreviewOptions<T extends MediaModel> {
   /**
    * 动画时长
    */
-  duration: number = 300
+  duration: number = 200
   /**
    * 是否显示分页文字
    */

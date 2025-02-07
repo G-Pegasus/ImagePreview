@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "/Users/liyuanbo/.ohos/config/default_MediaPreviewProject_60x3P1XkA6b2NQtTBsQIt4TgkAkNQLGLUkyr6Jgdag4=.cer",
-          "storePassword": "0000001BBA4E24F198E240FB4A31671F3723040A0ED6422CBE4CC3683ECECAE6C42F71D8ADB273310B8282",
+          "certpath": "/Users/liutongji/.ohos/config/default_media-preview_06M45EFWug7X5EeRmMHFMzle0W1Fcbv1oztSxdC7OXI=.cer",
+          "storePassword": "0000001B85ED9B61D71F5AC74294404C2803A0AB1EC93DB8DE8171BAF01076ADFD1B83358152DA73A6853D",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001BC7B623F862A9D0A6EB775ABE6FFCC4CF873C4F3085D49E3F35A31030519A1E4DD6C9023AEAFC4E",
-          "profile": "/Users/liyuanbo/.ohos/config/default_MediaPreviewProject_60x3P1XkA6b2NQtTBsQIt4TgkAkNQLGLUkyr6Jgdag4=.p7b",
+          "keyPassword": "0000001B31B31593151F09D5FD1CE312052DC9E78B98664DEF8D1625AD0CC747F36543F5D0FF7ACA819A6B",
+          "profile": "/Users/liutongji/.ohos/config/default_media-preview_06M45EFWug7X5EeRmMHFMzle0W1Fcbv1oztSxdC7OXI=.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "/Users/liyuanbo/.ohos/config/default_MediaPreviewProject_60x3P1XkA6b2NQtTBsQIt4TgkAkNQLGLUkyr6Jgdag4=.p12"
+          "storeFile": "/Users/liutongji/.ohos/config/default_media-preview_06M45EFWug7X5EeRmMHFMzle0W1Fcbv1oztSxdC7OXI=.p12"
         }
       }
     ],

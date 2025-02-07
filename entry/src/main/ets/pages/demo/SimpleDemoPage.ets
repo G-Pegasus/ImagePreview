@@ -77,9 +77,7 @@ export struct SimpleDemoPage {
           //TODO: 如果列表数据模型和mediaPreview的数据模型不一致，可以自己设置，不过要和上面的`setIdBuilder`中id一致
           .id(`media_${index}`)
           .aspectRatio(1)
-          .clickEffect({ level: ClickEffectLevel.MIDDLE, scale: 0.8 })
           //TODO: 仿微信那种资源在预览时原始资源隐藏显示
-          .visibility(index == this.index ? Visibility.Hidden : Visibility.Visible)
           .onClick(() => {
             this.options
               .setInitIndex(index)

@@ -112,18 +112,16 @@ export struct MediaPreviewComponent {
       .height("100%")
       .loop(false)
       .clip(true)
-      .onAnimationStart(() => {
+      .onAnimationStart((index: number, targetIndex: number) => {
         this.isScrolling = true
+        this.currentPage = targetIndex
+        this.options.onPageChangedListener(this.options.dataSource.getData(targetIndex), targetIndex)
       })
       .onAnimationEnd(() => {
         clearTimeout(this.timeOutTag)
         this.timeOutTag = setTimeout(() => {
           this.isScrolling = false
         }, 50)
-      })
-      .onChange((index) => {
-        this.currentPage = index
-        this.options.onPageChangedListener(this.options.dataSource.getData(index), index)
       })
 
       Row() {
